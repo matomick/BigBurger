@@ -21,7 +21,7 @@ class BurgerListViewModel @Inject constructor(
         getBurgersUseCase().onEach { result ->
             when (result) {
                 is Resource.Success -> {
-                    callback.onPostsLoaded(result.data ?: emptyList())
+                    callback.onGetBurgersLoaded(result.data ?: emptyList())
                 }
                 is Resource.Error -> {
                     callback.onError(result.message ?: "An unexpected error occured")
@@ -35,7 +35,7 @@ class BurgerListViewModel @Inject constructor(
 }
 
 interface GetBigBurgersCallback {
-    fun onPostsLoaded(burgers: List<Burger>)
+    fun onGetBurgersLoaded(burgers: List<Burger>)
     fun onError(errorMessage: String)
     fun onLoading()
 }

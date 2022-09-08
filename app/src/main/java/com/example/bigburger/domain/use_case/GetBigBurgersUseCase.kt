@@ -18,7 +18,12 @@ class GetBigBurgersUseCase @Inject constructor(
         try {
             emit(Resource.Loading<List<Burger>>())
             val burgers = repository.getBurgers().map { it.toBurger() }
-            emit(Resource.Success<List<Burger>>(burgers))
+            if(burgers.size > 0){
+                emit(Resource.Success<List<Burger>>(burgers))
+            }
+            else {
+                emit(Resource.Error<List<Burger>>( "Empty Data"))
+            }
         } catch(e: HttpException) {
             emit(Resource.Error<List<Burger>>(e.localizedMessage ?: "An unexpected error occured"))
         } catch(e: IOException) {

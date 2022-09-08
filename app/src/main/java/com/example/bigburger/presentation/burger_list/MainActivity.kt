@@ -2,7 +2,10 @@ package com.example.bigburger.presentation.burger_list
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -17,9 +20,11 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), GetBigBurgersCallback {
 
-    private lateinit var mBurgerList : RecyclerView
-    private lateinit var mErrorMessage : TextView
-    private lateinit var mProgress : ProgressBar
+    private lateinit var mBurgerList: RecyclerView
+    private lateinit var mErrorMessage: TextView
+    private lateinit var mProgress: ProgressBar
+    private lateinit var mLinError: LinearLayout
+    private lateinit var mBtnRetry: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,30 +32,43 @@ class MainActivity : AppCompatActivity(), GetBigBurgersCallback {
 
         val burgerListViewModel: BurgerListViewModel by viewModels()
 
+        //bind ui
         mBurgerList = findViewById(R.id.burger_list)
         mErrorMessage = findViewById(R.id.error_message)
         mProgress = findViewById(R.id.progress_circular)
+        mLinError = findViewById(R.id.lin_error)
+        mBtnRetry = findViewById(R.id.btn_retry)
+
+        // set retry btn action
+        mBtnRetry.setOnClickListener {
+            burgerListViewModel.getBurgers(this)
+        }
 
         //init list
         burgerListViewModel.getBurgers(this)
-
     }
 
-    override fun onPostsLoaded(burgers: List<Burger>) {
+    override fun onGetBurgersLoaded(burgers: List<Burger>) {
+        //initialize list adapter with data
         var adapter = BurgersRecyclerViewAdapter(this, burgers)
         mBurgerList.adapter = adapter
-        mErrorMessage.visibility = View.GONE
+        mLinError.visibility = View.GONE
         mProgress.visibility = View.GONE
+        mBurgerList.visibility = View.VISIBLE
     }
 
     override fun onError(errorMessage: String) {
-        mErrorMessage.visibility = View.GONE
+        //display error message
         mErrorMessage.text = errorMessage
+        mLinError.visibility = View.VISIBLE
         mProgress.visibility = View.GONE
+        mBurgerList.visibility = View.GONE
     }
 
     override fun onLoading() {
-        mErrorMessage.visibility = View.GONE
+        //display progress bar
+        mLinError.visibility = View.GONE
         mProgress.visibility = View.VISIBLE
+        mBurgerList.visibility = View.GONE
     }
 }

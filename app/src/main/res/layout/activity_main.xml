@@ -15,16 +15,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/error_message"
+    <LinearLayout
+        android:id="@+id/lin_error"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/error_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello World!"
+             />
+
+        <Button
+            android:layout_margin="10dp"
+            android:id="@+id/btn_retry"
+            android:text="@string/btn_retry_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/burger_list"
@@ -34,7 +50,6 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/burger_item" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

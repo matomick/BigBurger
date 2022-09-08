@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BigBurger</string>
+    <string name="btn_retry_text">Réessayer</string>
 </resources>
