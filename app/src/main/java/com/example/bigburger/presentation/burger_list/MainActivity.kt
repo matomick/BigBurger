@@ -1,20 +1,16 @@
 package com.example.bigburger.presentation.burger_list
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bigburger.R
 import com.example.bigburger.domain.model.Burger
-import com.example.bigburger.presentation.burger_list.BurgerListViewModel
-import com.example.bigburger.presentation.burger_list.GetBigBurgersCallback
-import com.example.bigburger.presentation.burger_list.BurgersRecyclerViewAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

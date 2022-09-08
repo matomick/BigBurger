@@ -1,16 +1,14 @@
 package com.example.bigburger.presentation.burger_list
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.bigburger.common.Resource
+import com.example.bigburger.domain.model.Burger
 import com.example.bigburger.domain.use_case.GetBigBurgersUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
-import androidx.lifecycle.viewModelScope
-import com.example.bigburger.domain.model.Burger
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 @HiltViewModel
 class BurgerListViewModel @Inject constructor(
