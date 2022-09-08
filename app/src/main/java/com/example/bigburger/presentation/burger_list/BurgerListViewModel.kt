@@ -10,7 +10,9 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.example.bigburger.domain.model.Burger
+import dagger.hilt.android.lifecycle.HiltViewModel
 
+@HiltViewModel
 class BurgerListViewModel @Inject constructor(
     private val getBurgersUseCase: GetBigBurgersUseCase
 ) : ViewModel() {
@@ -33,7 +35,7 @@ class BurgerListViewModel @Inject constructor(
 }
 
 interface GetBigBurgersCallback {
-    fun onPostsLoaded(posts: List<Burger>)
+    fun onPostsLoaded(burgers: List<Burger>)
     fun onError(errorMessage: String)
     fun onLoading()
 }
