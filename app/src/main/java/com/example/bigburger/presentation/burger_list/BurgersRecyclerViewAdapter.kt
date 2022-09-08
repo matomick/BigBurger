@@ -33,16 +33,18 @@ class BurgersRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: BurgerViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.title
-        holder.contentView.text = formatter1.format(item.price / 100)
+        holder.title.text = item.title
+        holder.description.text = item.description
+        holder.price.text = formatter1.format(item.price / 100)
         Glide.with(context).load(item.thumbnail).into(holder.thumbnail)
     }
 
     override fun getItemCount(): Int = values.size
 
     inner class BurgerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val idView: TextView = itemView.findViewById(R.id.item_number)
-        val contentView: TextView = itemView.findViewById(R.id.content)
+        val title: TextView = itemView.findViewById(R.id.title)
+        val description: TextView = itemView.findViewById(R.id.description)
+        val price: TextView = itemView.findViewById(R.id.price)
         val thumbnail: ImageView = itemView.findViewById(R.id.thumbnail)
     }
 
