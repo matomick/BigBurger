@@ -8,13 +8,14 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bigburger.R
-import com.example.bigburger.domain.model.Burger
+import com.example.bigburger.common.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), GetBigBurgersCallback {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var mBurgerList: RecyclerView
     private lateinit var mErrorMessage: TextView
@@ -22,11 +23,11 @@ class MainActivity : AppCompatActivity(), GetBigBurgersCallback {
     private lateinit var mLinError: LinearLayout
     private lateinit var mBtnRetry: Button
 
+    private val burgerListViewModel: BurgerListViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val burgerListViewModel: BurgerListViewModel by viewModels()
 
         //bind ui
         mBurgerList = findViewById(R.id.burger_list)
@@ -37,34 +38,38 @@ class MainActivity : AppCompatActivity(), GetBigBurgersCallback {
 
         // set retry btn action
         mBtnRetry.setOnClickListener {
-            burgerListViewModel.getBurgers(this)
+            observeResourceBurger()
         }
 
-        //init list
-        burgerListViewModel.getBurgers(this)
+        //create observers
+        observeResourceBurger()
     }
 
-    override fun onGetBurgersLoaded(burgers: List<Burger>) {
-        //initialize list adapter with data
-        var adapter = BurgersRecyclerViewAdapter(this, burgers)
-        mBurgerList.adapter = adapter
-        mLinError.visibility = View.GONE
-        mProgress.visibility = View.GONE
-        mBurgerList.visibility = View.VISIBLE
-    }
-
-    override fun onError(errorMessage: String) {
-        //display error message
-        mErrorMessage.text = errorMessage
-        mLinError.visibility = View.VISIBLE
-        mProgress.visibility = View.GONE
-        mBurgerList.visibility = View.GONE
-    }
-
-    override fun onLoading() {
-        //display progress bar
-        mLinError.visibility = View.GONE
-        mProgress.visibility = View.VISIBLE
-        mBurgerList.visibility = View.GONE
+    private fun observeResourceBurger(){
+        burgerListViewModel.getBurgers().observe(this, Observer { resource ->
+            when (resource){
+                is Resource.Loading ->{
+                    //display progress bar
+                    mLinError.visibility = View.GONE
+                    mProgress.visibility = View.VISIBLE
+                    mBurgerList.visibility = View.GONE
+                }
+                is Resource.Error -> {
+                    //display error message
+                    mErrorMessage.text = resource.message
+                    mLinError.visibility = View.VISIBLE
+                    mProgress.visibility = View.GONE
+                    mBurgerList.visibility = View.GONE
+                }
+                is Resource.Success -> {
+                    //initialize list adapter with data
+                    var adapter = BurgersRecyclerViewAdapter(this, resource.data ?: emptyList())
+                    mBurgerList.adapter = adapter
+                    mLinError.visibility = View.GONE
+                    mProgress.visibility = View.GONE
+                    mBurgerList.visibility = View.VISIBLE
+                }
+            }
+        })
     }
 }
