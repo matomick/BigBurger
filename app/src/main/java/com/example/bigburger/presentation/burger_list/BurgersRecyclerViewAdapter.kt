@@ -14,16 +14,12 @@ import java.text.NumberFormat
 import java.util.*
 
 
-/**
- * [RecyclerView.Adapter] that can display a [PlaceholderItem].
- * TODO: Replace the implementation with code for your data type.
- */
 class BurgersRecyclerViewAdapter(
     private val context: Context,
     private val values: List<Burger>
 ) : RecyclerView.Adapter<BurgersRecyclerViewAdapter.BurgerViewHolder>() {
 
-    val formatter1: NumberFormat = NumberFormat.getCurrencyInstance(Locale.FRANCE)
+    private val mFormatter: NumberFormat = NumberFormat.getCurrencyInstance(Locale.FRANCE)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BurgerViewHolder {
         val view = LayoutInflater.from(context)
@@ -35,7 +31,7 @@ class BurgersRecyclerViewAdapter(
         val item = values[position]
         holder.title.text = item.title
         holder.description.text = item.description
-        holder.price.text = formatter1.format(item.price / 100)
+        holder.price.text = mFormatter.format(item.price / 100)
         Glide.with(context).load(item.thumbnail).into(holder.thumbnail)
     }
 
